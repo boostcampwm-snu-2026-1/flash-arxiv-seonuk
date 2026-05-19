@@ -200,6 +200,12 @@ header h1 {
   gap: 0.4rem;
 }
 
+@media (max-width: 600px) {
+  .status-bar {
+    font-size: 0.6rem;
+  }
+}
+
 .live-dot {
   width: 7px;
   height: 7px;
