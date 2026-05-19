@@ -57,13 +57,6 @@ function PaperItem({ paper, saved, onToggleSave, index }) {
       <a className="paper-title" href={paper.url} target="_blank" rel="noreferrer">
         {paper.title}
       </a>
-      <a
-        className="mail-btn"
-        href={`mailto:iamseonuk@gmail.com?subject=${encodeURIComponent(paper.title)}&body=${encodeURIComponent(paper.url)}`}
-        title="Send to my email"
-      >
-        ✉
-      </a>
       {paper.abstract && (
         <div className="abstract-tooltip">{paper.abstract}</div>
       )}
@@ -177,7 +170,10 @@ export default function App() {
   return (
     <div className="app">
       <header>
-        <h1>Seonuk's Interactive Research Helper</h1>
+        <h1>
+          Seonuk's Interactive Research Helper
+          <a className="header-mail-btn" href="mailto:iamseonuk@gmail.com" title="Contact">✉</a>
+        </h1>
         <nav className="tabs">
           <button className={tab === 'papers' ? 'tab active' : 'tab'} onClick={() => setTab('papers')}>
             Papers
