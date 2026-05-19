@@ -1,12 +1,13 @@
 const BASE = '/arxiv/api/query'
 
-export async function fetchPapers(keywords, maxResults = 30) {
-  const query = keywords.map((k) => `all:${k}`).join(' AND ')
+export async function fetchPapers(keywords, maxResults = 20, start = 0) {
+  const query = keywords.map((k) => `all:"${k}"`).join(' AND ')
   const params = new URLSearchParams({
     search_query: query,
     sortBy: 'submittedDate',
     sortOrder: 'descending',
     max_results: maxResults,
+    start,
   })
 
   const res = await fetch(`${BASE}?${params}`)
@@ -24,8 +25,9 @@ function parseAtom(xml) {
   return entries.map((entry) => {
     const id = entry.querySelector('id')?.textContent?.split('/abs/').pop() ?? ''
     const title = entry.querySelector('title')?.textContent?.trim().replace(/\s+/g, ' ') ?? ''
+    const abstract = entry.querySelector('summary')?.textContent?.trim().replace(/\s+/g, ' ') ?? ''
     const published = entry.querySelector('published')?.textContent?.slice(0, 10) ?? ''
     const url = `https://arxiv.org/abs/${id}`
-    return { id, title, date: published, url }
+    return { id, title, abstract, date: published, url }
   })
 }

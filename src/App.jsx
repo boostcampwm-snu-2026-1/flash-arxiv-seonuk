@@ -3,6 +3,7 @@ import { fetchPapers } from './api/arxiv'
 import './App.css'
 
 const POLL_INTERVAL_MS = 60000
+const PAGE_SIZE = 20
 const KW_KEY = 'research-helper-keywords'
 const SAVED_KEY = 'research-helper-saved'
 
@@ -33,10 +34,6 @@ function formatDate(dateStr) {
   })
 }
 
-function isNew(dateStr) {
-  return Date.now() - new Date(dateStr).getTime() < 1000 * 60 * 60 * 24 * 2
-}
-
 function PaperItem({ paper, saved, onToggleSave }) {
   return (
     <li className="paper-item">
@@ -49,10 +46,12 @@ function PaperItem({ paper, saved, onToggleSave }) {
         {saved ? '★' : '☆'}
       </button>
       <span className="date">{formatDate(paper.date)}</span>
-      {isNew(paper.date) && <span className="new-badge">NEW</span>}
       <a className="paper-title" href={paper.url} target="_blank" rel="noreferrer">
         {paper.title}
       </a>
+      {paper.abstract && (
+        <div className="abstract-tooltip">{paper.abstract}</div>
+      )}
     </li>
   )
 }
@@ -62,9 +61,12 @@ export default function App() {
   const [keywords, setKeywords] = useState(loadKeywords)
   const [inputValue, setInputValue] = useState('')
   const [papers, setPapers] = useState([])
+  const [offset, setOffset] = useState(0)
+  const [hasMore, setHasMore] = useState(false)
   const [saved, setSaved] = useState(loadSaved)
   const [lastUpdated, setLastUpdated] = useState(null)
   const [loading, setLoading] = useState(false)
+  const [loadingMore, setLoadingMore] = useState(false)
   const [error, setError] = useState(null)
   const timerRef = useRef(null)
 
@@ -77,17 +79,33 @@ export default function App() {
   }, [saved])
 
   async function load(kws) {
-    if (kws.length === 0) { setPapers([]); return }
+    if (kws.length === 0) { setPapers([]); setOffset(0); setHasMore(false); return }
     setLoading(true)
     setError(null)
     try {
-      const results = await fetchPapers(kws)
+      const results = await fetchPapers(kws, PAGE_SIZE, 0)
       setPapers(results)
+      setOffset(PAGE_SIZE)
+      setHasMore(results.length === PAGE_SIZE)
       setLastUpdated(new Date())
     } catch (err) {
       setError(err.message)
     } finally {
       setLoading(false)
+    }
+  }
+
+  async function loadMore(kws) {
+    setLoadingMore(true)
+    try {
+      const results = await fetchPapers(kws, PAGE_SIZE, offset)
+      setPapers((prev) => [...prev, ...results])
+      setOffset((prev) => prev + PAGE_SIZE)
+      setHasMore(results.length === PAGE_SIZE)
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setLoadingMore(false)
     }
   }
 
@@ -184,6 +202,14 @@ export default function App() {
               <li className="empty">Add a keyword to get started.</li>
             )}
           </ul>
+
+          {hasMore && !loading && (
+            <div className="load-more-wrap">
+              <button className="load-more-btn" onClick={() => loadMore(keywords)} disabled={loadingMore}>
+                {loadingMore ? 'Loading…' : 'Load more'}
+              </button>
+            </div>
+          )}
         </>
       )}
 
