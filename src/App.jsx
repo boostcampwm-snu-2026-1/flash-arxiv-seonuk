@@ -57,6 +57,13 @@ function PaperItem({ paper, saved, onToggleSave, index }) {
       <a className="paper-title" href={paper.url} target="_blank" rel="noreferrer">
         {paper.title}
       </a>
+      <a
+        className="mail-btn"
+        href={`mailto:iamseonuk@gmail.com?subject=${encodeURIComponent(paper.title)}&body=${encodeURIComponent(paper.url)}`}
+        title="Send to my email"
+      >
+        ✉
+      </a>
       {paper.abstract && (
         <div className="abstract-tooltip">{paper.abstract}</div>
       )}

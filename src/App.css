@@ -284,6 +284,20 @@ header h1 {
   text-decoration: none;
 }
 
+.mail-btn {
+  font-size: 0.85rem;
+  color: var(--bg3);
+  flex-shrink: 0;
+  line-height: 1;
+  transition: color 0.15s;
+  text-decoration: none;
+}
+
+.mail-btn:hover {
+  color: var(--aqua);
+  text-decoration: none;
+}
+
 .scrap-btn {
   background: none;
   border: none;
