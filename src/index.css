@@ -1,0 +1,41 @@
+/* Gruvbox Dark */
+:root {
+  --bg:     #282828;
+  --bg1:    #3c3836;
+  --bg2:    #504945;
+  --bg3:    #665c54;
+  --fg:     #ebdbb2;
+  --fg2:    #d5c4a1;
+  --fg3:    #bdae93;
+  --yellow: #d79921;
+  --blue:   #458588;
+  --aqua:   #689d6a;
+  --orange: #d65d0e;
+  --gray:   #928374;
+
+  --font-serif: Georgia, "Palatino Linotype", Palatino, "Times New Roman", Times, serif;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-serif);
+  line-height: 1.6;
+  min-height: 100svh;
+}
+
+a {
+  color: var(--blue);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--aqua);
+  text-decoration: underline;
+}
