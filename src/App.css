@@ -16,18 +16,19 @@ header h1 {
   margin-bottom: 0.85rem;
   display: flex;
   align-items: center;
-  gap: 0.6rem;
+  justify-content: space-between;
 }
 
 .header-mail-btn {
-  font-size: 0.9rem;
-  color: var(--gray);
+  color: var(--bg3);
   text-decoration: none;
   transition: color 0.15s;
+  display: flex;
+  align-items: center;
 }
 
 .header-mail-btn:hover {
-  color: var(--aqua);
+  color: var(--yellow);
   text-decoration: none;
 }
 

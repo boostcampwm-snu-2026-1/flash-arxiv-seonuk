@@ -172,7 +172,12 @@ export default function App() {
       <header>
         <h1>
           Seonuk's Interactive Research Helper
-          <a className="header-mail-btn" href="mailto:iamseonuk@gmail.com" title="Contact">✉</a>
+          <a className="header-mail-btn" href="mailto:iamseonuk@gmail.com" title="Contact">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="2" y="4" width="20" height="16" rx="2"/>
+              <polyline points="2,4 12,13 22,4"/>
+            </svg>
+          </a>
         </h1>
         <nav className="tabs">
           <button className={tab === 'papers' ? 'tab active' : 'tab'} onClick={() => setTab('papers')}>
