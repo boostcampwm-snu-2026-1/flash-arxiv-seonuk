@@ -257,6 +257,14 @@ header h1 {
   transition: opacity 0.18s ease, transform 0.18s ease, visibility 0s;
 }
 
+@media (max-width: 600px) {
+  .abstract-tooltip {
+    font-size: 0.7rem;
+    padding: 0.5rem 0.65rem;
+    line-height: 1.5;
+  }
+}
+
 .paper-item .date {
   font-size: 0.75rem;
   color: var(--orange);
