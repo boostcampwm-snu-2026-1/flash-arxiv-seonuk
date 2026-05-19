@@ -22,7 +22,9 @@ async function request(params, retries = 3) {
 }
 
 export async function fetchPapers(keywords, maxResults = 20, start = 0) {
-  const query = keywords.map((k) => `all:"${k}"`).join(' AND ')
+  const query = keywords
+    .map((k) => `(ti:"${k}" OR abs:"${k}" OR au:"${k}")`)
+    .join(' AND ')
   const params = new URLSearchParams({
     search_query: query,
     sortBy: 'submittedDate',
