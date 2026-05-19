@@ -259,9 +259,7 @@ header h1 {
 
 @media (max-width: 600px) {
   .abstract-tooltip {
-    font-size: 0.7rem;
-    padding: 0.5rem 0.65rem;
-    line-height: 1.5;
+    display: none !important;
   }
 }
 
