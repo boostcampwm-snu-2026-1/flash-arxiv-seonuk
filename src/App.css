@@ -36,6 +36,7 @@ header h1 {
   display: flex;
   align-items: center;
   gap: 0.4rem;
+  transition: color 0.2s;
 }
 
 .tab:hover {
@@ -54,6 +55,16 @@ header h1 {
   border-radius: 2px;
   padding: 0.05rem 0.35rem;
   font-style: normal;
+}
+
+/* tab content fade */
+.tab-content {
+  animation: tab-fade-in 0.2s ease both;
+}
+
+@keyframes tab-fade-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 /* keyword section */
@@ -80,6 +91,21 @@ header h1 {
   padding: 0.2rem 0.55rem;
   border-radius: 2px;
   font-style: italic;
+  animation: chip-in 0.18s ease both;
+}
+
+@keyframes chip-in {
+  from { opacity: 0; transform: scale(0.85); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.chip.removing {
+  animation: chip-out 0.18s ease both;
+}
+
+@keyframes chip-out {
+  from { opacity: 1; transform: scale(1); }
+  to   { opacity: 0; transform: scale(0.75); }
 }
 
 .chip-remove {
@@ -92,6 +118,7 @@ header h1 {
   padding: 0;
   display: flex;
   align-items: center;
+  transition: color 0.15s;
 }
 
 .chip-remove:hover {
@@ -120,6 +147,7 @@ header h1 {
   padding: 0.4rem 0.65rem;
   border-radius: 3px;
   outline: none;
+  transition: border-color 0.2s;
 }
 
 .keyword-form input:focus {
@@ -139,6 +167,7 @@ header h1 {
   padding: 0.4rem 1rem;
   border-radius: 3px;
   cursor: pointer;
+  transition: background 0.2s;
 }
 
 .keyword-form button:hover {
@@ -182,32 +211,50 @@ header h1 {
   padding: 0.45rem 0;
   border-top: 1px solid var(--bg1);
   position: relative;
+  animation: paper-in 0.3s ease both;
+  opacity: 0;
 }
 
 .paper-item:last-child {
   border-bottom: 1px solid var(--bg1);
 }
 
+.paper-item:hover {
+  z-index: 100;
+}
+
+@keyframes paper-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* abstract tooltip */
 .abstract-tooltip {
-  display: none;
   position: absolute;
   top: calc(100% + 4px);
   left: 0;
   right: 0;
   z-index: 10;
-  background: var(--bg1);
-  border: 1px solid var(--bg2);
+  background: #3c3836;
+  border: 1px solid #504945;
   border-radius: 3px;
   padding: 0.75rem 1rem;
   font-size: 0.825rem;
   color: var(--fg2);
   line-height: 1.65;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
   pointer-events: none;
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.18s ease, transform 0.18s ease, visibility 0s linear 0.18s;
 }
 
 .paper-item:hover .abstract-tooltip {
-  display: block;
+  visibility: visible;
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.18s ease, transform 0.18s ease, visibility 0s;
 }
 
 .paper-item .date {
@@ -216,17 +263,6 @@ header h1 {
   white-space: nowrap;
   flex-shrink: 0;
   width: 4.75rem;
-  flex-shrink: 0;
-}
-
-.new-badge {
-  font-size: 0.6rem;
-  background: var(--orange);
-  color: var(--bg);
-  padding: 0.1rem 0.35rem;
-  border-radius: 2px;
-  flex-shrink: 0;
-  line-height: 1.4;
 }
 
 .paper-title {
@@ -234,6 +270,7 @@ header h1 {
   color: var(--fg);
   line-height: 1.45;
   flex: 1;
+  transition: color 0.15s;
 }
 
 .paper-title:hover {
@@ -250,7 +287,7 @@ header h1 {
   padding: 0;
   flex-shrink: 0;
   line-height: 1;
-  transition: color 0.15s;
+  transition: color 0.15s, transform 0.15s;
 }
 
 .scrap-btn:hover {
@@ -259,6 +296,17 @@ header h1 {
 
 .scrap-btn.scrapped {
   color: var(--yellow);
+}
+
+.scrap-btn.bounce {
+  animation: star-bounce 0.35s ease;
+}
+
+@keyframes star-bounce {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.55); }
+  70%  { transform: scale(0.85); }
+  100% { transform: scale(1); }
 }
 
 .empty {
@@ -271,7 +319,7 @@ header h1 {
 .load-more-wrap {
   display: flex;
   justify-content: center;
-  padding: 1.5rem 0;
+  padding: 1.5rem 0 2rem;
 }
 
 .load-more-btn {
@@ -280,9 +328,15 @@ header h1 {
   color: var(--fg3);
   font-family: var(--font-serif);
   font-size: 0.85rem;
-  padding: 0.45rem 2rem;
   border-radius: 3px;
   cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  justify-content: center;
+  width: 8rem;
+  height: 2.1rem;
 }
 
 .load-more-btn:hover:not(:disabled) {
@@ -291,6 +345,21 @@ header h1 {
 }
 
 .load-more-btn:disabled {
-  color: var(--gray);
   cursor: default;
+}
+
+.dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--gray);
+  animation: dot-bounce 1.2s infinite ease-in-out;
+}
+
+.dot:nth-child(2) { animation-delay: 0.2s; }
+.dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes dot-bounce {
+  0%, 80%, 100% { transform: translateY(0); opacity: 0.3; }
+  40%            { transform: translateY(-5px); opacity: 1; }
 }

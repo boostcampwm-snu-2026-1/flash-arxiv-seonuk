@@ -1,5 +1,26 @@
 const BASE = '/arxiv/api/query'
 
+const delay = (ms) => new Promise((res) => setTimeout(res, ms))
+
+let lastRequestTime = 0
+
+async function request(params, retries = 3) {
+  const now = Date.now()
+  const elapsed = now - lastRequestTime
+  if (elapsed < 5000) await delay(5000 - elapsed)
+  lastRequestTime = Date.now()
+
+  const res = await fetch(`${BASE}?${params}`)
+  if (res.status === 429) {
+    if (retries === 0) throw new Error('arXiv rate limit — try again in a moment')
+    await delay(10000)
+    lastRequestTime = 0
+    return request(params, retries - 1)
+  }
+  if (!res.ok) throw new Error(`arXiv API error: ${res.status}`)
+  return res.text()
+}
+
 export async function fetchPapers(keywords, maxResults = 20, start = 0) {
   const query = keywords.map((k) => `all:"${k}"`).join(' AND ')
   const params = new URLSearchParams({
@@ -10,10 +31,7 @@ export async function fetchPapers(keywords, maxResults = 20, start = 0) {
     start,
   })
 
-  const res = await fetch(`${BASE}?${params}`)
-  if (!res.ok) throw new Error(`arXiv API error: ${res.status}`)
-
-  const text = await res.text()
+  const text = await request(params)
   return parseAtom(text)
 }
 
