@@ -22,6 +22,10 @@
   padding: 0;
 }
 
+html {
+  font-size: 18px;
+}
+
 body {
   background-color: var(--bg);
   color: var(--fg);
