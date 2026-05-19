@@ -1,7 +1,7 @@
 const BASE = '/arxiv/api/query'
 
 export async function fetchPapers(keywords, maxResults = 30) {
-  const query = keywords.map((k) => `all:${k}`).join(' OR ')
+  const query = keywords.map((k) => `all:${k}`).join(' AND ')
   const params = new URLSearchParams({
     search_query: query,
     sortBy: 'submittedDate',
