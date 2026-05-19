@@ -1,5 +1,7 @@
 # Seonuk's Interactive Research Helper
 
+**Live:** https://interactive-research-helper.vercel.app
+
 A minimal web app for tracking the latest academic papers on arXiv by keyword.
 
 ## Features
