@@ -293,6 +293,24 @@ header h1 {
   width: 4.75rem;
 }
 
+.date-yr {
+  margin-left: 0.25rem;
+}
+
+@media (max-width: 600px) {
+  .paper-item .date {
+    white-space: normal;
+    width: 3.5rem;
+  }
+
+  .date-yr {
+    display: block;
+    margin-left: 0;
+    font-size: 0.65rem;
+    color: var(--bg3);
+  }
+}
+
 .paper-title {
   font-size: 0.9rem;
   color: var(--fg);

@@ -27,11 +27,10 @@ function loadSaved() {
 }
 
 function formatDate(dateStr) {
-  return new Date(dateStr).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-  })
+  const d = new Date(dateStr)
+  const monthDay = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+  const year = d.getFullYear()
+  return { monthDay, year }
 }
 
 function PaperItem({ paper, saved, onToggleSave, index }) {
@@ -53,7 +52,10 @@ function PaperItem({ paper, saved, onToggleSave, index }) {
       >
         {saved ? '★' : '☆'}
       </button>
-      <span className="date">{formatDate(paper.date)}</span>
+      <span className="date">
+        <span className="date-md">{formatDate(paper.date).monthDay}</span>
+        <span className="date-yr">{formatDate(paper.date).year}</span>
+      </span>
       <a className="paper-title" href={paper.url} target="_blank" rel="noreferrer">
         {paper.title}
       </a>
