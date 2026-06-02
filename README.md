@@ -1,4 +1,4 @@
-# Seonuk's Interactive Research Helper
+# Interactive Research Helper
 
 **Live:** https://interactive-research-helper.vercel.app
 
@@ -16,6 +16,26 @@ A minimal web app for tracking the latest academic papers on arXiv by keyword.
 - Gruvbox dark theme
 - Serif typography (Georgia / Palatino)
 
+## Stack
+
+| Category | Technology | Reason |
+|----------|-----------|--------|
+| Frontend | Vite + Vanilla JS | Fast builds, no framework overhead needed |
+| Styling | CSS Variables | Gruvbox theming, easy to maintain |
+| Data | arXiv API | Free, no auth required, best CS/ML coverage |
+| Deployment | Vercel | Auto-deploy on push, zero config |
+
+## Branch Strategy
+
+```
+main    ← production (auto-deploys to Vercel)
+  └─ dev     ← integration branch
+       └─ feature/xxx  ← per-feature work branches
+```
+
+All feature work is done on `feature/*` branches and merged into `dev` via PR.  
+`dev` is merged into `main` when ready to deploy.
+
 ## Getting Started
 
 ```bash
@@ -25,7 +45,7 @@ npm run dev
 
 Open [http://localhost:5173](http://localhost:5173).
 
-## Stack
+## Links
 
-- [Vite](https://vite.dev/) + [React](https://react.dev/)
-- [arXiv API](https://info.arxiv.org/help/api/index.html) (no API key required)
+- [Wiki](https://github.com/boostcampwm-snu-2026-1/InteractiveResearchHelper-SeonukKim/wiki)
+- [Issues](https://github.com/boostcampwm-snu-2026-1/InteractiveResearchHelper-SeonukKim/issues)
