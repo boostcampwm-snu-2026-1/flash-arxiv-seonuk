@@ -6,10 +6,14 @@ A minimal web app for tracking the latest academic papers on arXiv by keyword.
 
 ## Features
 
-- **Keyword tracking** — add and remove keywords; results update in real time (60s polling)
+- **Keyword tracking** — add and remove keywords as chips; results update in real time (60s polling)
 - **arXiv integration** — fetches papers via the arXiv public API, sorted by submission date
+- **Category filter** — drill-down picker for the full arXiv taxonomy (cs, eess, math, …) to narrow search scope
 - **Save papers** — star any paper to save it; view saved papers in the Saved tab
-- **Persistent state** — keywords and saved papers survive page refresh via localStorage
+- **Notes** — attach free-text memos to saved papers, persisted across sessions
+- **Folders** — create folders, assign saved papers, and filter by folder
+- **Search saved** — filter saved papers by title, abstract, or note content in real time
+- **Persistent state** — all keywords, categories, saves, notes, and folders survive page refresh via localStorage
 
 ## Design
 
@@ -18,12 +22,39 @@ A minimal web app for tracking the latest academic papers on arXiv by keyword.
 
 ## Stack
 
-| Category | Technology | Reason |
-|----------|-----------|--------|
-| Frontend | Vite + Vanilla JS | Fast builds, no framework overhead needed |
-| Styling | CSS Variables | Gruvbox theming, easy to maintain |
-| Data | arXiv API | Free, no auth required, best CS/ML coverage |
-| Deployment | Vercel | Auto-deploy on push, zero config |
+### Core
+
+| Category | Technology | Version | Notes |
+|----------|-----------|---------|-------|
+| UI framework | React | 19 | Hooks only — no class components |
+| Build tool | Vite | 8 | Dev server + production bundler |
+| Language | JavaScript (JSX) | ES Modules | No TypeScript |
+| Styling | CSS Variables | — | Gruvbox palette, no CSS framework |
+
+### Data & Storage
+
+| Category | Technology | Notes |
+|----------|-----------|-------|
+| Paper source | arXiv Public API | Free, no auth; Atom/XML response |
+| XML parsing | Browser `DOMParser` | No external XML library |
+| Persistence | `localStorage` | Keywords, categories, saves, notes, folders |
+
+### Networking
+
+| Concern | Approach |
+|---------|----------|
+| CORS proxy (dev) | Vite `server.proxy` → `/arxiv` rewrites to `export.arxiv.org` |
+| CORS proxy (prod) | `vercel.json` rewrites rule |
+| Rate limiting | 5 s minimum gap between requests; 429 → 10 s back-off + auto-retry (3×) |
+| Polling | `setInterval` at 60 s; reset on keyword/category change |
+
+### Tooling
+
+| Tool | Purpose |
+|------|---------|
+| ESLint 10 | Linting (react-hooks, react-refresh plugins) |
+| `@vitejs/plugin-react` | JSX transform, Fast Refresh |
+| Vercel | Zero-config hosting, auto-deploy on push to `main` |
 
 ## Branch Strategy
 
