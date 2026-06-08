@@ -21,10 +21,16 @@ async function request(params, retries = 3) {
   return res.text()
 }
 
-export async function fetchPapers(keywords, maxResults = 20, start = 0) {
-  const query = keywords
-    .map((k) => `(ti:"${k}" OR abs:"${k}" OR au:"${k}")`)
-    .join(' AND ')
+export async function fetchPapers(keywords, categories = [], maxResults = 20, start = 0) {
+  const parts = []
+  if (keywords.length > 0) {
+    parts.push(keywords.map((k) => `(ti:"${k}" OR abs:"${k}" OR au:"${k}")`).join(' AND '))
+  }
+  if (categories.length > 0) {
+    parts.push(`(${categories.map((c) => `cat:${c}`).join(' OR ')})`)
+  }
+  const query = parts.join(' AND ')
+
   const params = new URLSearchParams({
     search_query: query,
     sortBy: 'submittedDate',
