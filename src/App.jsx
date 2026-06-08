@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { fetchPapers } from './api/arxiv'
+import { ARXIV_TAXONOMY } from './data/arxivCategories'
 import './App.css'
 
 const POLL_INTERVAL_MS = 60000
@@ -37,6 +38,51 @@ function Chip({ label, onRemove, variant }) {
       {label}
       <button className="chip-remove" onClick={() => setRemoving(true)} aria-label={`Remove ${label}`}>×</button>
     </span>
+  )
+}
+
+function CategoryPicker({ onSelect, selected }) {
+  const [activeTop, setActiveTop] = useState(null)
+
+  function handleTopClick(group) {
+    if (group.subs.length === 0) {
+      onSelect(group.id)
+    } else {
+      setActiveTop((prev) => (prev === group.id ? null : group.id))
+    }
+  }
+
+  const activeSubs = activeTop ? ARXIV_TAXONOMY.find((g) => g.id === activeTop)?.subs ?? [] : []
+
+  return (
+    <div className="cat-picker">
+      <div className="cat-picker-top">
+        {ARXIV_TAXONOMY.map((group) => (
+          <button
+            key={group.id}
+            className={`cat-top-btn${activeTop === group.id ? ' active' : ''}${selected.includes(group.id) ? ' selected' : ''}`}
+            onClick={() => handleTopClick(group)}
+            title={group.name}
+          >
+            {group.id}
+          </button>
+        ))}
+      </div>
+      {activeSubs.length > 0 && (
+        <div className="cat-picker-subs">
+          {activeSubs.map((sub) => (
+            <button
+              key={sub.id}
+              className={`cat-sub-btn${selected.includes(sub.id) ? ' selected' : ''}`}
+              onClick={() => onSelect(sub.id)}
+              title={sub.name}
+            >
+              {sub.id}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
   )
 }
 
@@ -120,7 +166,6 @@ export default function App() {
   const [keywords, setKeywords] = useState(() => loadLS(KW_KEY, []))
   const [inputValue, setInputValue] = useState('')
   const [categories, setCategories] = useState(() => loadLS(CAT_KEY, []))
-  const [catInput, setCatInput] = useState('')
   const [papers, setPapers] = useState([])
   const [paperKey, setPaperKey] = useState(0)
   const [offset, setOffset] = useState(0)
@@ -198,12 +243,9 @@ export default function App() {
     setKeywords((prev) => prev.filter((k) => k !== kw))
   }
 
-  function addCategory(e) {
-    e.preventDefault()
-    const cat = catInput.trim()
-    if (!cat || categories.includes(cat)) { setCatInput(''); return }
+  function addCategory(cat) {
+    if (!cat || categories.includes(cat)) return
     setCategories((prev) => [...prev, cat])
-    setCatInput('')
   }
 
   function removeCategory(cat) {
@@ -310,18 +352,10 @@ export default function App() {
               <div className="keyword-chips">
                 {categories.map((c) => <Chip key={c} label={c} onRemove={removeCategory} variant="cat" />)}
                 {categories.length === 0 && (
-                  <span className="chip-empty">All categories — add one to filter (e.g. eess.AS, cs.LG)</span>
+                  <span className="chip-empty">All categories — select below to filter</span>
                 )}
               </div>
-              <form className="keyword-form" onSubmit={addCategory}>
-                <input
-                  type="text"
-                  placeholder="Add category (e.g. eess.AS)…"
-                  value={catInput}
-                  onChange={(e) => setCatInput(e.target.value)}
-                />
-                <button type="submit">Add</button>
-              </form>
+              <CategoryPicker onSelect={addCategory} selected={categories} />
             </section>
 
             <div className="status-bar">

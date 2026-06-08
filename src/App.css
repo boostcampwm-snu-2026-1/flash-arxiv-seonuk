@@ -427,6 +427,78 @@ header h1 {
   margin-bottom: 0.4rem;
 }
 
+/* category picker */
+.cat-picker {
+  margin-top: 0.4rem;
+}
+
+.cat-picker-top {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-bottom: 0.35rem;
+}
+
+.cat-top-btn {
+  background: var(--bg1);
+  border: 1px solid var(--bg2);
+  color: var(--fg3);
+  font-family: var(--font-serif);
+  font-size: 0.76rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+
+.cat-top-btn:hover {
+  color: var(--orange);
+  border-color: var(--orange);
+}
+
+.cat-top-btn.active {
+  background: var(--bg2);
+  color: var(--orange);
+  border-color: var(--orange);
+}
+
+.cat-top-btn.selected {
+  color: var(--yellow);
+  border-color: var(--yellow);
+}
+
+.cat-picker-subs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  padding: 0.45rem 0 0.1rem;
+  border-top: 1px solid var(--bg1);
+  animation: tab-fade-in 0.15s ease both;
+}
+
+.cat-sub-btn {
+  background: none;
+  border: 1px solid var(--bg2);
+  color: var(--orange);
+  font-family: var(--font-serif);
+  font-size: 0.76rem;
+  font-style: italic;
+  padding: 0.15rem 0.5rem;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.cat-sub-btn:hover {
+  background: var(--bg1);
+  border-color: var(--orange);
+}
+
+.cat-sub-btn.selected {
+  color: var(--yellow);
+  border-color: var(--yellow);
+}
+
 /* saved tab controls */
 .saved-controls {
   margin: 1rem 0 0.6rem;
