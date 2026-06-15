@@ -1,6 +1,6 @@
 # FlashArxiv
 
-**Live:** https://flash-arxiv-seonuk.web.app
+**Live:** https://flash-arxiv-seonuk.vercel.app
 
 arXiv 최신 논문을 키워드로 빠르게 검색하고, AI로 한국어 요약까지 — 개인 연구 피드 앱
 
@@ -37,7 +37,7 @@ arXiv 최신 논문을 키워드로 빠르게 검색하고, AI로 한국어 요�
 | AI 요약 | Gemini Flash API | 무료 티어, 1,500 req/day |
 | 인증 | Firebase Auth | Google 로그인 |
 | 데이터베이스 | Firestore | 사용자별 데이터 영속화 |
-| 배포 | Firebase Hosting | push 시 자동 배포 |
+| 배포 | Vercel | GitHub 연동 자동 배포 |
 | 논문 소스 | arXiv Public API | 무료, 인증 불필요 |
 
 ### Networking
@@ -45,13 +45,13 @@ arXiv 최신 논문을 키워드로 빠르게 검색하고, AI로 한국어 요�
 | Concern | Approach |
 |---------|----------|
 | CORS proxy (dev) | Vite `server.proxy` → `/arxiv` |
-| CORS proxy (prod) | arXiv API 직접 호출 (CORS 허용) |
+| CORS proxy (prod) | `vercel.json` rewrites → `export.arxiv.org` |
 | Rate limiting | 5s 간격, 429 → 10s 백오프 + 3회 재시도 |
 
 ## Branch Strategy
 
 ```
-main    ← production (Firebase Hosting 자동 배포)
+main    ← production (Vercel 자동 배포)
   └─ dev     ← 통합 브랜치
        └─ feature/xxx  ← 기능별 작업 브랜치
 ```
