@@ -1,6 +1,6 @@
 # FlashArxiv
 
-**Live:** https://flash-arxiv-seonuk.vercel.app
+**Live:** https://flash-arxiv-seonuk-mu.vercel.app/
 
 arXiv 최신 논문을 키워드로 빠르게 검색하고, AI로 한국어 요약까지 — 개인 연구 피드 앱
 
