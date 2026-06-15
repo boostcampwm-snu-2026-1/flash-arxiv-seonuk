@@ -1,4 +1,6 @@
-const BASE = '/arxiv/api/query'
+const BASE = import.meta.env.DEV
+  ? '/arxiv/api/query'
+  : 'https://export.arxiv.org/api/query'
 
 const delay = (ms) => new Promise((res) => setTimeout(res, ms))
 

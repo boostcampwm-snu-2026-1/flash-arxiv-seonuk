@@ -1,8 +1,0 @@
-{
-  "rewrites": [
-    {
-      "source": "/arxiv/:path*",
-      "destination": "https://export.arxiv.org/:path*"
-    }
-  ]
-}
