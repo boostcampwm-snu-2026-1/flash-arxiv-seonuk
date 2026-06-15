@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { fetchPapers } from './api/arxiv'
+import { summarizePaper } from './api/gemini'
 import './App.css'
 
 const POLL_INTERVAL_MS = 60000
@@ -35,10 +36,27 @@ function formatDate(dateStr) {
 
 function PaperItem({ paper, saved, onToggleSave, index }) {
   const [bounce, setBounce] = useState(false)
+  const [summary, setSummary] = useState(null)
+  const [summarizing, setSummarizing] = useState(false)
+  const [summaryError, setSummaryError] = useState(null)
 
   function handleSave() {
     setBounce(true)
     onToggleSave(paper)
+  }
+
+  async function handleSummarize() {
+    if (summary) { setSummary(null); return }
+    setSummarizing(true)
+    setSummaryError(null)
+    try {
+      const result = await summarizePaper(paper.title, paper.abstract)
+      setSummary(result)
+    } catch (err) {
+      setSummaryError(err.message)
+    } finally {
+      setSummarizing(false)
+    }
   }
 
   return (
@@ -60,8 +78,30 @@ function PaperItem({ paper, saved, onToggleSave, index }) {
         {paper.title}
       </a>
       {paper.abstract && (
-        <div className="abstract-tooltip">{paper.abstract}</div>
+        <button
+          className={`ai-btn${summary ? ' active' : ''}`}
+          onClick={handleSummarize}
+          disabled={summarizing}
+          title="AI 요약"
+        >
+          AI 요약
+        </button>
       )}
+      {paper.abstract && <div className="abstract-tooltip">{paper.abstract}</div>}
+      {summarizing && (
+        <div className="ai-thinking">
+          <span className="ai-thinking-label">번역 및 요약 중</span>
+          <span className="think-dot" /><span className="think-dot" /><span className="think-dot" />
+        </div>
+      )}
+      {summary && !summarizing && (
+        <ul className="ai-summary">
+          {summary.split('\n').filter((l) => l.trim()).map((line, i) => (
+            <li key={i}>{line.replace(/^-\s*/, '')}</li>
+          ))}
+        </ul>
+      )}
+      {summaryError && !summarizing && <div className="ai-summary ai-summary-error">{summaryError}</div>}
     </li>
   )
 }
@@ -173,7 +213,7 @@ export default function App() {
     <div className="app">
       <header>
         <h1>
-          Seonuk's Interactive Research Helper
+          FlashArxiv
           <a className="header-mail-btn" href="mailto:iamseonuk@gmail.com" title="Contact">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
               <rect x="2" y="4" width="20" height="16" rx="2"/>
