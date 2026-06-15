@@ -1,3 +1,12 @@
+@font-face {
+  font-family: 'ZenSerif';
+  src: url('/fonts/ZEN-SERIF-Regular.otf') format('opentype'),
+       url('/fonts/ZEN-SERIF-TTF-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* Gruvbox Dark */
 :root {
   --bg:     #282828;
@@ -13,7 +22,7 @@
   --orange: #d65d0e;
   --gray:   #928374;
 
-  --font-serif: Georgia, "Palatino Linotype", Palatino, "Times New Roman", Times, serif;
+  --font-serif: 'Lora', 'ZenSerif', Georgia, serif;
 }
 
 *, *::before, *::after {
